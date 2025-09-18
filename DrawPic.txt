@@ -1,0 +1,142 @@
+//Register uses:
+//R0 multiple, temporary, purposes
+//R8 number of wrong guesses
+      MOV R8, #10
+drawPic:
+      CMP R8, #1
+      BLT endDraw
+      MOV R0, #.brown
+      STR R0, .Pixel739 //Upright
+      STR R0, .Pixel707
+      STR R0, .Pixel675
+      STR R0, .Pixel643
+      STR R0, .Pixel611
+      STR R0, .Pixel579
+      STR R0, .Pixel547
+      STR R0, .Pixel515
+      STR R0, .Pixel483
+      STR R0, .Pixel451
+      STR R0, .Pixel419
+      STR R0, .Pixel387
+      STR R0, .Pixel355
+      STR R0, .Pixel323
+      STR R0, .Pixel291
+      STR R0, .Pixel259
+      STR R0, .Pixel227
+      STR R0, .Pixel195
+      STR R0, .Pixel163
+      STR R0, .Pixel131
+      CMP R8, #2
+      BLT endDraw
+      STR R0, .Pixel132 //Cross beam
+      STR R0, .Pixel133
+      STR R0, .Pixel134
+      STR R0, .Pixel135
+      STR R0, .Pixel136
+      STR R0, .Pixel137
+      STR R0, .Pixel138
+      STR R0, .Pixel139
+      STR R0, .Pixel140
+      CMP R8, #3
+      BLT endDraw
+      MOV R0, #.gray
+      STR R0, .Pixel172 //Rope
+      STR R0, .Pixel204
+      STR R0, .Pixel235
+      STR R0, .Pixel237
+      STR R0, .Pixel267
+      STR R0, .Pixel269
+      STR R0, .Pixel300
+      CMP R8, #4
+      BLT endDraw
+      MOV R0, #.pink
+      STR R0, .Pixel205 //Head
+      STR R0, .Pixel206
+      STR R0, .Pixel236
+      STR R0, .Pixel237
+      STR R0, .Pixel238
+      STR R0, .Pixel239
+      STR R0, .Pixel268
+      STR R0, .Pixel269
+      STR R0, .Pixel270
+      STR R0, .Pixel271
+      STR R0, .Pixel301
+      STR R0, .Pixel302
+      CMP R8, #5
+      BLT endDraw
+      MOV R0, #0x00529e
+      STR R0, .Pixel299 //Body
+      STR R0, .Pixel330
+      STR R0, .Pixel331
+      STR R0, .Pixel332
+      STR R0, .Pixel362
+      STR R0, .Pixel363
+      STR R0, .Pixel364
+      STR R0, .Pixel394
+      STR R0, .Pixel395
+      STR R0, .Pixel426
+      STR R0, .Pixel427
+      STR R0, .Pixel458
+      STR R0, .Pixel459
+      STR R0, .Pixel490
+      STR R0, .Pixel491
+      CMP R8, #6
+      BLT endDraw
+      MOV R0, #0x663e02 //Left Leg
+      STR R0, .Pixel522
+      STR R0, .Pixel554
+      STR R0, .Pixel586
+      STR R0, .Pixel618
+      MOV R0, #0x422801
+      STR R0, .Pixel650
+      STR R0, .Pixel682
+      STR R0, .Pixel683
+      CMP R8, #7
+      BLT endDraw
+      MOV R0, #0x422801 /Right Leg
+      STR R0, .Pixel523
+      STR R0, .Pixel555
+      STR R0, .Pixel587
+      STR R0, .Pixel619
+      MOV R0, #0x000000
+      STR R0, .Pixel651
+      STR R0, .Pixel684
+      CMP R8, #8
+      BLT endDraw
+      MOV R0, #0x01417d
+      STR R0, .Pixel396 //Left Arm
+      STR R0, .Pixel428
+      STR R0, .Pixel460
+      MOV R0, #0xe897bf
+      STR R0, .Pixel492
+      CMP R8, #9
+      BLT endDraw
+      MOV R0, #0x0057a8
+      STR R0, .Pixel364 //Right Arm
+      STR R0, .Pixel396
+      STR R0, .Pixel428
+      STR R0, .Pixel460
+      MOV R0, #0xf0a5cb
+      STR R0, .Pixel492
+      CMP R8, #10
+      BLT endDraw
+      MOV R0, #0xff0000
+      STR R0, .Pixel268 //Blood
+      STR R0, .Pixel301
+      STR R0, .Pixel748
+      STR R0, .Pixel749
+      STR R0, .Pixel750
+      STR R0, .Pixel751
+      MOV R0, #0xa80085
+      STR R0, .Pixel205 //Purple Head
+      STR R0, .Pixel206
+      STR R0, .Pixel236
+      STR R0, .Pixel237
+      STR R0, .Pixel238
+      STR R0, .Pixel239
+      STR R0, .Pixel270
+      STR R0, .Pixel271
+      STR R0, .Pixel269
+      STR R0, .Pixel302
+endDraw:
+      HALT

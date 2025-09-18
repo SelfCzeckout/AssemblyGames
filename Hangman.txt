@@ -1,0 +1,220 @@
+//Register uses:
+//R0 multiple, temporary, purposes
+//R1 secret word, loaded from memory (loaded & cleared each guess so it does not show on the UI)
+//R2 current letter guess
+//R3 successful guesses in right place(s), otherwise zeros
+//R4 holds the built up result (of underscores and correct letters)
+//R5 to R7 temporary use in processing
+//R8 number of wrong guesses
+//R9 number of matches made
+captureWord:
+MOV R0, #setter
+STR R0, .WriteString
+MOV R0, #secretWord
+STR R0, .ReadSecret
+guessLetter:
+MOV R0, #player
+STR R0, .WriteString
+waitForKey: LDR R2, .LastKeyAndReset
+CMP R2, #0
+BEQ waitForKey
+ORR R2,R2,#32 //Forces the character to be lower case
+MOV R6, #0 //Set to 1 if a NEW match is found
+MOV R7, #0 //This will increment 0 > 8 > 16> 24 as a shift amount to select successive characters
+checkForMatch:
+MOV R5, #0xff //The mask for character 1
+LSL R5, R5, R7 //Shift mask to character of interest (first shift will be zero!)
+AND R0,R3,R5 //Apply mask to past guesses
+CMP R0, #0
+BEQ cont //If char position is NOT empty this char has been correctly guessed
+LSR R4,R0,R7
+B writeChar
+cont:
+LDR R1, secretWord
+AND R0, R1, R5
+MOV R1, #0 //Reset so it does not reveal word on UI when paused
+LSR R4, R0, R7 //Get the char back to position 1
+ORR R4,R4, #32 //Force the character to lower case
+CMP R4, R2
+BNE notAMatch
+ORR R3,R3,R0
+ADD R9,R9,#1
+MOV R6, #1 //Set R6 to flag that the character has been matched
+B writeChar
+notAMatch:
+MOV R4, #95 //Underscore
+writeChar:
+STR R4, .WriteChar
+ADD R7,R7, #8 //Shift to next character
+CMP R7, #32
+BLT checkForMatch
+MOV R0, #10 //Newline
+STR R0, .WriteChar
+//If there has not been a match, increment the number of misses
+CMP R6, #0
+BNE checkForWin
+ADD R8, R8, #1
+STR R8, .WriteUnsignedNum
+MOV R0, #wrong
+STR R0, .WriteString
+B drawPic
+checkForWin:
+CMP R9, #4
+BNE drawPic
+MOV R0, #win
+STR R0, .WriteString
+HALT
+      MOV R8, #10
+drawPic:
+      CMP R8, #1
+      BLT endDraw
+      MOV R0, #.brown
+      STR R0, .Pixel739 //Upright
+      STR R0, .Pixel707
+      STR R0, .Pixel675
+      STR R0, .Pixel643
+      STR R0, .Pixel611
+      STR R0, .Pixel579
+      STR R0, .Pixel547
+      STR R0, .Pixel515
+      STR R0, .Pixel483
+      STR R0, .Pixel451
+      STR R0, .Pixel419
+      STR R0, .Pixel387
+      STR R0, .Pixel355
+      STR R0, .Pixel323
+      STR R0, .Pixel291
+      STR R0, .Pixel259
+      STR R0, .Pixel227
+      STR R0, .Pixel195
+      STR R0, .Pixel163
+      STR R0, .Pixel131
+      CMP R8, #2
+      BLT endDraw
+      STR R0, .Pixel132 //Cross beam
+      STR R0, .Pixel133
+      STR R0, .Pixel134
+      STR R0, .Pixel135
+      STR R0, .Pixel136
+      STR R0, .Pixel137
+      STR R0, .Pixel138
+      STR R0, .Pixel139
+      STR R0, .Pixel140
+      CMP R8, #3
+      BLT endDraw
+      MOV R0, #.gray
+      STR R0, .Pixel172 //Rope
+      STR R0, .Pixel204
+      STR R0, .Pixel235
+      STR R0, .Pixel237
+      STR R0, .Pixel267
+      STR R0, .Pixel269
+      STR R0, .Pixel300
+      CMP R8, #4
+      BLT endDraw
+      MOV R0, #.pink
+      STR R0, .Pixel205 //Head
+      STR R0, .Pixel206
+      STR R0, .Pixel236
+      STR R0, .Pixel237
+      STR R0, .Pixel238
+      STR R0, .Pixel239
+      STR R0, .Pixel268
+      STR R0, .Pixel269
+      STR R0, .Pixel270
+      STR R0, .Pixel271
+      STR R0, .Pixel301
+      STR R0, .Pixel302
+      CMP R8, #5
+      BLT endDraw
+      MOV R0, #0x00529e
+      STR R0, .Pixel299 //Body
+      STR R0, .Pixel330
+      STR R0, .Pixel331
+      STR R0, .Pixel332
+      STR R0, .Pixel362
+      STR R0, .Pixel363
+      STR R0, .Pixel364
+      STR R0, .Pixel394
+      STR R0, .Pixel395
+      STR R0, .Pixel426
+      STR R0, .Pixel427
+      STR R0, .Pixel458
+      STR R0, .Pixel459
+      STR R0, .Pixel490
+      STR R0, .Pixel491
+      CMP R8, #6
+      BLT endDraw
+      MOV R0, #0x663e02 //Left Leg
+      STR R0, .Pixel522
+      STR R0, .Pixel554
+      STR R0, .Pixel586
+      STR R0, .Pixel618
+      MOV R0, #0x422801
+      STR R0, .Pixel650
+      STR R0, .Pixel682
+      STR R0, .Pixel683
+      CMP R8, #7
+      BLT endDraw
+      MOV R0, #0x422801 /Right Leg
+      STR R0, .Pixel523
+      STR R0, .Pixel555
+      STR R0, .Pixel587
+      STR R0, .Pixel619
+      MOV R0, #0x000000
+      STR R0, .Pixel651
+      STR R0, .Pixel684
+      CMP R8, #8
+      BLT endDraw
+      MOV R0, #0x01417d
+      STR R0, .Pixel396 //Left Arm
+      STR R0, .Pixel428
+      STR R0, .Pixel460
+      MOV R0, #0xe897bf
+      STR R0, .Pixel492
+      CMP R8, #9
+      BLT endDraw
+      MOV R0, #0x0057a8
+      STR R0, .Pixel364 //Right Arm
+      STR R0, .Pixel396
+      STR R0, .Pixel428
+      STR R0, .Pixel460
+      MOV R0, #0xf0a5cb
+      STR R0, .Pixel492
+      CMP R8, #10
+      BLT endDraw
+      MOV R0, #0xff0000
+      STR R0, .Pixel268 //Blood
+      STR R0, .Pixel301
+      STR R0, .Pixel748
+      STR R0, .Pixel749
+      STR R0, .Pixel750
+      STR R0, .Pixel751
+      MOV R0, #0xa80085
+      STR R0, .Pixel205 //Purple Head
+      STR R0, .Pixel206
+      STR R0, .Pixel236
+      STR R0, .Pixel237
+      STR R0, .Pixel238
+      STR R0, .Pixel239
+      STR R0, .Pixel270
+      STR R0, .Pixel271
+      STR R0, .Pixel269
+      STR R0, .Pixel302
+HLT
+endDraw: CMP R8, #10 //This many guesses means you're hung!
+BLT guessLetter
+MOV R0, #.black
+STR R0, .Pixel519 //Head again
+MOV R0, #lose
+STR R0, .WriteString
+MOV R0, #secretWord
+STR R0, .WriteString
+HALT
+setter: .ASCIZ "Setter: Enter word\n"
+player: .ASCIZ "Player: Try a letter\n"
+win: .ASCIZ "You win!\n"
+lose: .ASCIZ "You lose! Word was:"
+wrong: .ASCIZ "wrong. "
+.ALIGN 512
+secretWord:
