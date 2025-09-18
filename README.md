@@ -2,7 +2,7 @@
 2 mini games that I have made in assembly code while learning through the Metal Up Books 1 and 2.
 
 To play the games you can download the files and visit: https://peterhigginson.co.uk/ARMlite/?profile=player
-Alternatively, you can visit link to see a more detailed view of what's going on: https://peterhigginson.co.uk/ARMlite/?profile=player
+Alternatively, you can visit the following link to have a more detailed view of what's going on: https://peterhigginson.co.uk/ARMlite/?profile=player
 
 To start playing, click "Load", choose the file you would like to play and press the play button near the top.
 
